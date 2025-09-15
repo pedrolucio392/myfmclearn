@@ -9,11 +9,18 @@ variable (P Q R : Prop)
 
 theorem doubleneg_intro :
   P → ¬ ¬ P  := by
-  sorry
+  intro hp
+  intro hnp
+  have hf : False := hnp hp
+  exact hf
 
 theorem doubleneg_elim :
   ¬ ¬ P → P  := by
-  sorry
+  intro hp
+  by_cases hf : P
+  · exact hf
+  · have hnf : False := hp hf
+    contradiction
 
 theorem doubleneg_law :
   ¬ ¬ P ↔ P  := by
