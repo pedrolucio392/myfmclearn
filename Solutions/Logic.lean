@@ -24,7 +24,16 @@ theorem doubleneg_elim :
 
 theorem doubleneg_law :
   ¬ ¬ P ↔ P  := by
-  sorry
+  constructor
+  · intro hp
+    by_cases h : P
+    · exact h
+    · have hn : False := hp h
+      contradiction
+  · intro hp
+    intro hpn
+    have hf : False := hpn hp
+    exact hf
 
 
 ------------------------------------------------
@@ -33,11 +42,21 @@ theorem doubleneg_law :
 
 theorem disj_comm :
   (P ∨ Q) → (Q ∨ P)  := by
-  sorry
+  intro h
+  rcases h with hp | hq
+  · right
+    exact hp
+  · left
+    exact hq
+
 
 theorem conj_comm :
   (P ∧ Q) → (Q ∧ P)  := by
-  sorry
+  intro h
+  rcases h with ⟨hp, hq⟩
+  constructor
+  · exact hq
+  · exact hp
 
 
 ------------------------------------------------
