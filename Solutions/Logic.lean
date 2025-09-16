@@ -141,7 +141,13 @@ theorem lem_irrefutable :
 
 theorem peirce_law_weak :
   ((P → Q) → P) → ¬ ¬ P  := by
-  sorry
+  intro h1 h2
+  have hpq : P → Q := by
+    intro hp
+    have hf : False := h2 hp
+    contradiction
+  have hp : P := h1 hpq
+  exact h2 hp
 
 
 ------------------------------------------------
@@ -150,8 +156,12 @@ theorem peirce_law_weak :
 
 theorem impl_linear :
   (P → Q) ∨ (Q → P)  := by
+  left
+  intro h1
+  by_cases hq : Q
+  · exact hq
+  ·
   sorry
-
 
 ------------------------------------------------
 -- Interdefinability of ∨,∧
@@ -159,11 +169,19 @@ theorem impl_linear :
 
 theorem disj_as_negconj :
   P ∨ Q → ¬ (¬ P ∧ ¬ Q)  := by
-  sorry
+  intros h1 h2
+  rcases h2 with ⟨hnp, hnq ⟩
+  rcases h1 with hp | hq
+  · exact hnp hp
+  · exact hnq hq
 
 theorem conj_as_negdisj :
   P ∧ Q → ¬ (¬ P ∨ ¬ Q)  := by
-  sorry
+  intros h1 h2
+  rcases h1 with ⟨hp, hq⟩
+  rcases h2 with hnp | hnq
+  · exact hnp hp
+  · exact hnq hq
 
 
 ------------------------------------------------
@@ -172,6 +190,7 @@ theorem conj_as_negdisj :
 
 theorem demorgan_disj :
   ¬ (P ∨ Q) → (¬ P ∧ ¬ Q)  := by
+  intro h1
   sorry
 
 theorem demorgan_disj_converse :
