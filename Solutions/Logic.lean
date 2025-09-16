@@ -154,14 +154,14 @@ theorem peirce_law_weak :
 -- Linearity of →
 ------------------------------------------------
 
-theorem impl_linear :
-  (P → Q) ∨ (Q → P)  := by
-  left
-  intro h1
-  by_cases hq : Q
-  · exact hq
-  ·
-  sorry
+-- theorem impl_linear :
+--   (P → Q) ∨ (Q → P)  := by
+--   left
+--   intro h1
+--   by_cases hq : Q
+--   · exact hq
+--   ·
+--   sorry
 
 ------------------------------------------------
 -- Interdefinability of ∨,∧
@@ -318,87 +318,87 @@ variable (P Q : U → Type)
 -- De Morgan laws for ∃,∀
 ------------------------------------------------
 
-theorem demorgan_exists :
-  ¬ (∃ x, P x) → (∀ x, ¬ P x)  := by
-  sorry
+-- theorem demorgan_exists :
+--   ¬ (∃ x, P x) → (∀ x, ¬ P x)  := by
+--   sorry
 
-theorem demorgan_exists_converse :
-  (∀ x, ¬ P x) → ¬ (∃ x, P x)  := by
-  sorry
+-- theorem demorgan_exists_converse :
+--   (∀ x, ¬ P x) → ¬ (∃ x, P x)  := by
+--   sorry
 
-theorem demorgan_forall :
-  ¬ (∀ x, P x) → (∃ x, ¬ P x)  := by
-  sorry
+-- theorem demorgan_forall :
+--   ¬ (∀ x, P x) → (∃ x, ¬ P x)  := by
+--   sorry
 
-theorem demorgan_forall_converse :
-  (∃ x, ¬ P x) → ¬ (∀ x, P x)  := by
-  sorry
+-- theorem demorgan_forall_converse :
+--   (∃ x, ¬ P x) → ¬ (∀ x, P x)  := by
+--   sorry
 
-theorem demorgan_forall_law :
-  ¬ (∀ x, P x) ↔ (∃ x, ¬ P x)  := by
-  sorry
+-- theorem demorgan_forall_law :
+--   ¬ (∀ x, P x) ↔ (∃ x, ¬ P x)  := by
+--   sorry
 
-theorem demorgan_exists_law :
-  ¬ (∃ x, P x) ↔ (∀ x, ¬ P x)  := by
-  sorry
+-- theorem demorgan_exists_law :
+--   ¬ (∃ x, P x) ↔ (∀ x, ¬ P x)  := by
+--   sorry
 
 
 ------------------------------------------------
 -- Interdefinability of ∃,∀
 ------------------------------------------------
 
-theorem exists_as_neg_forall :
-  (∃ x, P x) → ¬ (∀ x, ¬ P x)  := by
-  sorry
+-- theorem exists_as_neg_forall :
+--   (∃ x, P x) → ¬ (∀ x, ¬ P x)  := by
+--   sorry
 
-theorem forall_as_neg_exists :
-  (∀ x, P x) → ¬ (∃ x, ¬ P x)  := by
-  sorry
+-- theorem forall_as_neg_exists :
+--   (∀ x, P x) → ¬ (∃ x, ¬ P x)  := by
+--   sorry
 
-theorem forall_as_neg_exists_converse :
-  ¬ (∃ x, ¬ P x) → (∀ x, P x)  := by
-  sorry
+-- theorem forall_as_neg_exists_converse :
+--   ¬ (∃ x, ¬ P x) → (∀ x, P x)  := by
+--   sorry
 
-theorem exists_as_neg_forall_converse :
-  ¬ (∀ x, ¬ P x) → (∃ x, P x)  := by
-  sorry
+-- theorem exists_as_neg_forall_converse :
+--   ¬ (∀ x, ¬ P x) → (∃ x, P x)  := by
+--   sorry
 
-theorem forall_as_neg_exists_law :
-  (∀ x, P x) ↔ ¬ (∃ x, ¬ P x)  := by
-  sorry
+-- theorem forall_as_neg_exists_law :
+--   (∀ x, P x) ↔ ¬ (∃ x, ¬ P x)  := by
+--   sorry
 
-theorem exists_as_neg_forall_law :
-  (∃ x, P x) ↔ ¬ (∀ x, ¬ P x)  := by
-  sorry
+-- theorem exists_as_neg_forall_law :
+--   (∃ x, P x) ↔ ¬ (∀ x, ¬ P x)  := by
+--   sorry
 
 
 ------------------------------------------------
 --  Distributivity between quantifiers
 ------------------------------------------------
 
-theorem exists_conj_as_conj_exists :
-  (∃ x, P x ∧ Q x) → (∃ x, P x) ∧ (∃ x, Q x)  := by
-  sorry
+-- theorem exists_conj_as_conj_exists :
+--   (∃ x, P x ∧ Q x) → (∃ x, P x) ∧ (∃ x, Q x)  := by
+--   sorry
 
-theorem exists_disj_as_disj_exists :
-  (∃ x, P x ∨ Q x) → (∃ x, P x) ∨ (∃ x, Q x)  := by
-  sorry
+-- theorem exists_disj_as_disj_exists :
+--   (∃ x, P x ∨ Q x) → (∃ x, P x) ∨ (∃ x, Q x)  := by
+--   sorry
 
-theorem exists_disj_as_disj_exists_converse :
-  (∃ x, P x) ∨ (∃ x, Q x) → (∃ x, P x ∨ Q x)  := by
-  sorry
+-- theorem exists_disj_as_disj_exists_converse :
+--   (∃ x, P x) ∨ (∃ x, Q x) → (∃ x, P x ∨ Q x)  := by
+--   sorry
 
-theorem forall_conj_as_conj_forall :
-  (∀ x, P x ∧ Q x) → (∀ x, P x) ∧ (∀ x, Q x)  := by
-  sorry
+-- theorem forall_conj_as_conj_forall :
+--   (∀ x, P x ∧ Q x) → (∀ x, P x) ∧ (∀ x, Q x)  := by
+--   sorry
 
-theorem forall_conj_as_conj_forall_converse :
-  (∀ x, P x) ∧ (∀ x, Q x) → (∀ x, P x ∧ Q x)  := by
-  sorry
+-- theorem forall_conj_as_conj_forall_converse :
+--   (∀ x, P x) ∧ (∀ x, Q x) → (∀ x, P x ∧ Q x)  := by
+--   sorry
 
-theorem forall_disj_as_disj_forall_converse :
-  (∀ x, P x) ∨ (∀ x, Q x) → (∀ x, P x ∨ Q x)  := by
-  sorry
+-- theorem forall_disj_as_disj_forall_converse :
+--   (∀ x, P x) ∨ (∀ x, Q x) → (∀ x, P x ∨ Q x)  := by
+--   sorry
 
 
 end predicate
