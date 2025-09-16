@@ -124,8 +124,14 @@ theorem contrapositive_law :
 theorem lem_irrefutable :
   ¬ ¬ (P ∨ ¬ P)  := by
   intro h1
-  sorry
-
+  have hp : (P ∨ ¬ P) := by
+    right
+    intro hnp
+    have hpp : (P ∨ ¬ P) := by
+      left
+      exact hnp
+    exact h1 hpp
+  exact h1 hp
 
 
 
