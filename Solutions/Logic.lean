@@ -192,24 +192,50 @@ theorem conj_as_negdisj :
 
 theorem demorgan_disj :
   ¬ (P ∨ Q) → (¬ P ∧ ¬ Q)  := by
-  intro h1
-  sorry
+  intro (h : ¬ (P ∨ Q))
+  constructor
+  · intro np
+    have hpq : P ∨ Q := by
+      left
+      assumption
+    have f : False := h hpq
+    contradiction
+  · intro nq
+    have hpq : P ∨ Q := by
+      right
+      assumption
+    have f : False := h hpq
+    contradiction
+
 
 theorem demorgan_disj_converse :
   (¬ P ∧ ¬ Q) → ¬ (P ∨ Q)  := by
-  sorry
+  intro (h1 : ¬ P ∧ ¬ Q) (h2 : P ∨ Q)
+  rcases h1 with ⟨np, nq⟩
+  rcases h2 with p | q
+  · exact np p
+  · exact nq q
 
 theorem demorgan_conj :
   ¬ (P ∧ Q) → (¬ Q ∨ ¬ P)  := by
+  intro (h : ¬ (P ∧ Q))
+  ·
   sorry
 
 theorem demorgan_conj_converse :
   (¬ Q ∨ ¬ P) → ¬ (P ∧ Q)  := by
-  sorry
+  intro (h1 : ¬ Q ∨ ¬ P) (h2 : P ∧ Q)
+  rcases h2 with ⟨p, q⟩
+  rcases h1 with nq | np
+  · have f : False := nq q
+    assumption
+  · have f : False := np p
+    assumption
 
 theorem demorgan_conj_law :
   ¬ (P ∧ Q) ↔ (¬ Q ∨ ¬ P)  := by
-  sorry
+  constructor
+  · intro (h : ¬(P ∧ Q))
 
 theorem demorgan_disj_law :
   ¬ (P ∨ Q) ↔ (¬ P ∧ ¬ Q)  := by
