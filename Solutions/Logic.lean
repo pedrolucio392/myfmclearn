@@ -285,19 +285,64 @@ theorem demorgan_disj_law :
 
 theorem distr_conj_disj :
   P ∧ (Q ∨ R) → (P ∧ Q) ∨ (P ∧ R)  := by
-  sorry
+  intro h
+  rcases h with ⟨hp, hqr⟩
+  rcases hqr with hq | hr
+  · left
+    constructor
+    · exact hp
+    · exact hq
+  · right
+    constructor
+    · exact hp
+    · exact hr
 
 theorem distr_conj_disj_converse :
   (P ∧ Q) ∨ (P ∧ R) → P ∧ (Q ∨ R)  := by
-  sorry
+  intro h
+  rcases h with hpq | hpr
+  · rcases hpq with ⟨hp, hq⟩
+    constructor
+    · exact hp
+    · left
+      exact hq
+  · rcases hpr with ⟨hp, hr⟩
+    constructor
+    · exact hp
+    · right
+      exact hr
 
 theorem distr_disj_conj :
   P ∨ (Q ∧ R) → (P ∨ Q) ∧ (P ∨ R)  := by
-  sorry
+  intro h
+  constructor
+  · rcases h with hp | hqr
+    · left
+      exact hp
+    · rcases hqr with ⟨hq, hr⟩
+      right
+      exact hq
+  · rcases h with hp | hqr
+    · left
+      exact hp
+    · rcases hqr with ⟨hq, hr⟩
+      right
+      exact hr
 
 theorem distr_disj_conj_converse :
   (P ∨ Q) ∧ (P ∨ R) → P ∨ (Q ∧ R)  := by
-  sorry
+  intro h
+  rcases h with ⟨hpq, hpr⟩
+  rcases hpq with hp | hq
+  · left
+    exact hp
+  · rcases hpr with hp | hr
+    · left
+      exact hp
+    · right
+      constructor
+      · exact hq
+      · exact hr
 
 
 ------------------------------------------------
@@ -306,11 +351,20 @@ theorem distr_disj_conj_converse :
 
 theorem curry_prop :
   ((P ∧ Q) → R) → (P → (Q → R))  := by
-  sorry
+  intro h hp hq
+  have hpq : P ∧ Q := by
+    constructor
+    · exact hp
+    · exact hq
+  exact h hpq
+
 
 theorem uncurry_prop :
   (P → (Q → R)) → ((P ∧ Q) → R)  := by
-  sorry
+  intro h hpq
+  rcases hpq with ⟨hp, hq⟩
+  have hqr : Q → R := h hp
+  exact hqr hq
 
 
 ------------------------------------------------
@@ -319,7 +373,8 @@ theorem uncurry_prop :
 
 theorem impl_refl :
   P → P  := by
-  sorry
+  intro hp
+  exact hp
 
 
 ------------------------------------------------
@@ -328,19 +383,27 @@ theorem impl_refl :
 
 theorem weaken_disj_right :
   P → (P ∨ Q)  := by
-  sorry
+  intro hp
+  left
+  exact hp
 
 theorem weaken_disj_left :
   Q → (P ∨ Q)  := by
-  sorry
+  intro hq
+  right
+  exact hq
 
 theorem weaken_conj_right :
   (P ∧ Q) → P  := by
-  sorry
+  intro hpq
+  rcases hpq with ⟨hp, hq⟩
+  exact hp
 
 theorem weaken_conj_left :
   (P ∧ Q) → Q  := by
-  sorry
+  intro hpq
+  rcases hpq with ⟨hp, hq⟩
+  exact hq
 
 
 ------------------------------------------------
@@ -349,12 +412,25 @@ theorem weaken_conj_left :
 
 theorem disj_idem :
   (P ∨ P) ↔ P  := by
-  sorry
+  constructor
+  · intro hpp
+    rcases hpp with hp | hp
+    · assumption
+    · assumption
+  · intro hp
+    left
+    · assumption
 
 theorem conj_idem :
   (P ∧ P) ↔ P := by
-  sorry
-
+  constructor
+  · intro hpp
+    rcases hpp with ⟨hp, hp⟩
+    · assumption
+  · intro hp
+    constructor
+    · assumption
+    · assumption
 
 ------------------------------------------------
 -- Bottom, Top
@@ -362,11 +438,13 @@ theorem conj_idem :
 
 theorem false_bottom :
   False → P := by
-  sorry
+  intro f
+  contradiction
 
 theorem true_top :
   P → True  := by
-  sorry
+  intro hp
+  exact True.intro
 
 
 end propositional
