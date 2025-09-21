@@ -454,7 +454,7 @@ end propositional
 section predicate
 
 variable (U : Type)
-variable (P Q : U → Type)
+variable (P Q : U → Prop)
 
 
 ------------------------------------------------
@@ -463,27 +463,55 @@ variable (P Q : U → Type)
 
 theorem demorgan_exists :
   ¬ (∃ x, P x) → (∀ x, ¬ P x)  := by
-  sorry
+  intro h
+  intro u
+  intro nPu
+  have h_exists : ∃ x, P x := by
+    exists u
+  exact h h_exists
 
 theorem demorgan_exists_converse :
   (∀ x, ¬ P x) → ¬ (∃ x, P x)  := by
-  sorry
+  intro h
+  intro h_exists
+  rcases h_exists with  ⟨w, hPw⟩
+  have h_not_Pw : ¬P w := h w
+  contradiction
 
 theorem demorgan_forall :
   ¬ (∀ x, P x) → (∃ x, ¬ P x)  := by
-  sorry
+  intro h
+  by_cases enp : ∃ x, ¬P x
+  · exact enp
+  · have for_all_px : ∀ (x : U), P x := by
+      intro u
+      by_cases Pu : P u
+      · exact Pu
+      · have h_exists : ∃ x, ¬P x := by
+          exists u
+        contradiction
+    contradiction
 
 theorem demorgan_forall_converse :
   (∃ x, ¬ P x) → ¬ (∀ x, P x)  := by
-  sorry
+  intro exnP
+  intro faP
+  rcases exnP with ⟨w, hnPw⟩
+  · have Pw : P w := faP w
+    contradiction
 
 theorem demorgan_forall_law :
   ¬ (∀ x, P x) ↔ (∃ x, ¬ P x)  := by
-  sorry
+  constructor
+  · exact demorgan_forall U P
+  · exact demorgan_forall_converse U P
+
 
 theorem demorgan_exists_law :
   ¬ (∃ x, P x) ↔ (∀ x, ¬ P x)  := by
-  sorry
+  constructor
+  · exact demorgan_exists U P
+  · exact demorgan_exists_converse U P
 
 
 ------------------------------------------------
@@ -492,27 +520,55 @@ theorem demorgan_exists_law :
 
 theorem exists_as_neg_forall :
   (∃ x, P x) → ¬ (∀ x, ¬ P x)  := by
-  sorry
+  intro exP
+  intro fanP
+  rcases exP with ⟨w, hPw⟩
+  have nPw : ¬P w := fanP w
+  contradiction
 
 theorem forall_as_neg_exists :
   (∀ x, P x) → ¬ (∃ x, ¬ P x)  := by
-  sorry
+  intro faP
+  intro exnP
+  rcases exnP with ⟨w, hPw⟩
+  have Pw : P w := faP w
+  contradiction
 
 theorem forall_as_neg_exists_converse :
   ¬ (∃ x, ¬ P x) → (∀ x, P x)  := by
-  sorry
+  intro nexnP
+  intro u
+  by_cases Pu : P u
+  · exact Pu
+  · have exnP : ∃ x, ¬P x := by
+      exists u
+    contradiction
 
 theorem exists_as_neg_forall_converse :
   ¬ (∀ x, ¬ P x) → (∃ x, P x)  := by
-  sorry
+  intro nfanP
+  by_cases exp : ∃ x, P x
+  · exact exp
+  · have faP : ∀ (x : U), ¬P x := by
+      intro u
+      by_cases Pu : P u
+      · have h_exists : ∃ x, P x := by
+          exists u
+        contradiction
+      · exact Pu
+    contradiction
 
 theorem forall_as_neg_exists_law :
   (∀ x, P x) ↔ ¬ (∃ x, ¬ P x)  := by
-  sorry
+  constructor
+  · exact forall_as_neg_exists U P
+  · exact forall_as_neg_exists_converse U P
 
 theorem exists_as_neg_forall_law :
   (∃ x, P x) ↔ ¬ (∀ x, ¬ P x)  := by
-  sorry
+  constructor
+  · exact exists_as_neg_forall U P
+  · exact exists_as_neg_forall_converse U P
 
 
 ------------------------------------------------
@@ -521,27 +577,69 @@ theorem exists_as_neg_forall_law :
 
 theorem exists_conj_as_conj_exists :
   (∃ x, P x ∧ Q x) → (∃ x, P x) ∧ (∃ x, Q x)  := by
-  sorry
+  intro exPQ
+  rcases exPQ with ⟨w, hPQw⟩
+  rcases hPQw with ⟨hPw, hQw⟩
+  constructor
+  · exists w
+  · exists w
 
 theorem exists_disj_as_disj_exists :
   (∃ x, P x ∨ Q x) → (∃ x, P x) ∨ (∃ x, Q x)  := by
-  sorry
+  intro exPQ
+  rcases exPQ with ⟨w, hPQw⟩
+  rcases hPQw with hPw | hQw
+  · left
+    exists w
+  · right
+    exists w
 
 theorem exists_disj_as_disj_exists_converse :
   (∃ x, P x) ∨ (∃ x, Q x) → (∃ x, P x ∨ Q x)  := by
-  sorry
+  intro exP_and_exQ
+  rcases exP_and_exQ with exP | exQ
+  · rcases exP with ⟨w, Pw⟩
+    exists w
+    left
+    exact Pw
+  · rcases exQ with ⟨w, Qw⟩
+    exists w
+    right
+    exact Qw
 
 theorem forall_conj_as_conj_forall :
   (∀ x, P x ∧ Q x) → (∀ x, P x) ∧ (∀ x, Q x)  := by
-  sorry
+  intro faPQ
+  constructor
+  · intro u
+    have PQu : P u ∧ Q u := faPQ u
+    rcases PQu with ⟨Pu, Qu⟩
+    assumption
+  · intro u
+    have PQu : P u ∧ Q u := faPQ u
+    rcases PQu with ⟨Pu, Qu⟩
+    assumption
 
 theorem forall_conj_as_conj_forall_converse :
   (∀ x, P x) ∧ (∀ x, Q x) → (∀ x, P x ∧ Q x)  := by
-  sorry
+  intro faP_and_faQ
+  intro u
+  rcases faP_and_faQ with ⟨faP, faQ⟩
+  have Pu : P u := faP u
+  have Qu : Q u := faQ u
+  constructor
+  · assumption
+  · assumption
 
 theorem forall_disj_as_disj_forall_converse :
   (∀ x, P x) ∨ (∀ x, Q x) → (∀ x, P x ∨ Q x)  := by
-  sorry
+  intro faP_or_faQ
+  intro u
+  rcases faP_or_faQ with faP | faQ
+  · left
+    exact faP u
+  · right
+    exact faQ u
 
 
 end predicate
