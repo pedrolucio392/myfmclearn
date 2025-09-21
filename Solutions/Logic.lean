@@ -219,8 +219,16 @@ theorem demorgan_disj_converse :
 theorem demorgan_conj :
   ¬ (P ∧ Q) → (¬ Q ∨ ¬ P)  := by
   intro (h : ¬ (P ∧ Q))
-  ·
-  sorry
+  by_cases hp : P
+  · left
+    intro hq
+    have hpq : P ∧ Q := by
+      constructor
+      · exact hp
+      · exact hq
+    exact h hpq
+  . right
+    assumption
 
 theorem demorgan_conj_converse :
   (¬ Q ∨ ¬ P) → ¬ (P ∧ Q)  := by
@@ -235,11 +243,40 @@ theorem demorgan_conj_converse :
 theorem demorgan_conj_law :
   ¬ (P ∧ Q) ↔ (¬ Q ∨ ¬ P)  := by
   constructor
-  · intro (h : ¬(P ∧ Q))
+  · intro h
+    by_cases hp : P
+    · left
+      intro hq
+      exact h ⟨hp, hq⟩
+    · right
+      exact hp
+  · intro (h1 : ¬ Q ∨ ¬ P) (h2 : P ∧ Q)
+    rcases h2 with ⟨p, q⟩
+    rcases h1 with nq | np
+    · exact nq q
+    · exact np p
+
 
 theorem demorgan_disj_law :
   ¬ (P ∨ Q) ↔ (¬ P ∧ ¬ Q)  := by
-  sorry
+  constructor
+  · intro (h : ¬(P ∨ Q))
+    constructor
+    · intro hp
+      have hpq : P ∨ Q := by
+        left
+        exact hp
+      contradiction
+    · intro hq
+      have hpq : P ∨ Q := by
+        right
+        exact hq
+      contradiction
+  intro (h1 : ¬ P ∧ ¬ Q) (h2 : P ∨ Q)
+  rcases h1 with ⟨np, nq⟩
+  rcases h2 with p | q
+  · exact np p
+  · exact nq q
 
 
 ------------------------------------------------
